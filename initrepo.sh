@@ -1,18 +1,20 @@
 #!/bin/bash
 
-folderName=$1
+if [ $# -eq 0 ]; then
+  echo "Usage: create_folder.sh <folder_name> [<folder_name2> ...]"
+  exit 1
+fi
 
-# Creating the folder
-mkdir $folderName
+for folder_name in "$@"; do
+  if [ -d "$folder_name" ]; then
+    echo "Folder '$folder_name' already exists. Skippiing.."
+  else
+    # Create the folder with the given name
+    mkdir "$folder_name"
 
-# Changing directory into the folder
-cd $folderName
+    # Create a README.md file inside the folder
+    echo "# $folder_name" > "$folder_name/README.md"
+    echo "Initialized repo: $folder_name"
+  fi
+done
 
-# Replacing _ and - with spaces
-folderName=${folderName//_/ }
-folderName=${folder//-/ }
-
-# Creating the README.md file
-echo "# $folderName" >> README.md
-
-echo "Folder $folderName created successfully and Changed directory into that folder"
